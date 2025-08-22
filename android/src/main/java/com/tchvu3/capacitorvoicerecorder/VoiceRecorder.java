@@ -57,6 +57,7 @@ public class VoiceRecorder extends Plugin {
 
     @PluginMethod
     public void startRecording(PluginCall call) {
+
         if (!CustomMediaRecorder.canPhoneCreateMediaRecorder(getContext())) {
             call.reject(Messages.CANNOT_RECORD_ON_THIS_PHONE);
             return;
@@ -80,7 +81,10 @@ public class VoiceRecorder extends Plugin {
         try {
             String directory = call.getString("directory");
             String subDirectory = call.getString("subDirectory");
-            RecordOptions options = new RecordOptions(directory, subDirectory);
+            String audioEncoder = call.getString("audioEncoder");
+            String extention = call.getString("extention");
+
+            RecordOptions options = new RecordOptions(directory, subDirectory, audioEncoder, extention);
             mediaRecorder = new CustomMediaRecorder(getContext(), options);
             mediaRecorder.startRecording();
             call.resolve(ResponseGenerator.successResponse());

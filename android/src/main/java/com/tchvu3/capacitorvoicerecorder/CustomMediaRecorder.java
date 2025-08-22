@@ -26,8 +26,26 @@ public class CustomMediaRecorder {
     private void generateMediaRecorder() throws IOException {
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
+        String audioEncoder = options.getAudioEncoder();
+        if (audioEncoder != null) {
+            switch (audioEncoder) {
+                case "AAC":
+                    mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+                    break;
+                case "AAC_ELD":
+                    mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC_ELD);
+                    break;
+                case "OPUS":
+                    mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.OPUS);
+                    break;
+                default:
+                    mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+                    break;
+            }
+        } else {
+            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        }
         mediaRecorder.setAudioEncodingBitRate(96000);
         mediaRecorder.setAudioSamplingRate(44100);
         setRecorderOutputFile();
@@ -54,7 +72,13 @@ public class CustomMediaRecorder {
             }
         }
 
-        outputFile = File.createTempFile(String.format("recording-%d", System.currentTimeMillis()), ".aac", outputDir);
+        String extension = options.getExtention();
+
+        if (extension == null) {
+            extension = ".aac";
+        }
+
+        outputFile = File.createTempFile(String.format("recording-%d", System.currentTimeMillis()), extension, outputDir);
 
         if (directory == null) {
             outputFile.deleteOnExit();

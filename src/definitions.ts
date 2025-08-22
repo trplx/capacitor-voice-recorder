@@ -10,9 +10,11 @@ export interface RecordingData {
 }
 
 export interface RecordingOptions {
-    directory: Directory;
+    directory?: Directory;
     subDirectory?: string;
-    encoder?: string;
+    audioEncoder?: 'AAC' | 'AAC_ELD'| 'OPUS';
+    // outputFormat?: 'AAC_ADTS' | 'MPEG_4'; 
+    extention?: '.aac' | '.mp4' | '.m4a';
 };
 
 export interface RecordingPermissionStatus {

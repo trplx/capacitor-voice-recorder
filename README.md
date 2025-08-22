@@ -109,7 +109,7 @@ VoiceRecorder.startRecording(options?: RecordingOptions) => Promise<void>
 
 Start the audio recording.
 
-Optional options can be used with this method to save the file in the device's filesystem and return a path to that file instead of a base64 string. This greatly increases performance for large files.
+Optional options `directory` and `subDirectory` can be used with this method to save the file in the device's filesystem and return a path to that file instead of a base64 string. This greatly increases performance for large files.
 
 | Param         | Type                                                          |
 | ------------- | ------------------------------------------------------------- |
