@@ -97,7 +97,7 @@ Check if the audio recording permission has been granted.
 
 | Error code                          | Description                        |
 |-------------------------------------|------------------------------------|
-| `COULD_NOT_QUERY_PERMISSION_STATUS` | Failed to query permission status. |
+| `COULD_NOT_QUERY_PERMISSION_STATUS` | Failed to query permission status  |
 
 </br>
 
@@ -120,94 +120,84 @@ Optional options can be used with this method to save the file in the device's f
 
 | Error code                   | Description                              |
 |------------------------------|------------------------------------------|
-| `MISSING_PERMISSION`         | Required permission is missing.          |
-| `DEVICE_CANNOT_VOICE_RECORD` | Device/browser cannot record audio.      |
-| `ALREADY_RECORDING`          | A recording is already in progress.      |
-| `MICROPHONE_BEING_USED`      | Microphone is being used by another app. |
-| `FAILED_TO_RECORD`           | Unknown error occurred during recording. |
+| `MISSING_PERMISSION`         | Required permission is missing           |
+| `DEVICE_CANNOT_VOICE_RECORD` | Device/browser cannot record audio       |
+| `ALREADY_RECORDING`          | A recording is already in progress       |
+| `MICROPHONE_BEING_USED`      | Microphone is being used by another app  |
+| `FAILED_TO_RECORD`           | Unknown error occurred during recording  |
 
 </br>
 
-### stopRecording
+### stopRecording()
+
+```typescript
+VoiceRecorder.stopRecording() => Promise<RecordingData>
+```
 
 Stops the audio recording and returns the recording data.
 
-When a `directory` option has been passed to the `VoiceRecorder.startRecording` method the data will include a `path` instead of a `recordDataBase64`
+When a `directory` option has been passed to the `VoiceRecorder.startRecording()` method, the data will include a `path` instead of a `recordDataBase64`.
 
-```typescript
-VoiceRecorder.stopRecording()
-    .then((result: RecordingData) => console.log(result.value))
-    .catch(error => console.log(error));
-```
+**Returns:** <code>Promise&lt;<a href="#recordingData">RecordingData</a>&gt;</code>
 
-| Return Value       | Description                                    |
-|--------------------|------------------------------------------------|
-| `recordDataBase64` | The recorded audio data in Base64 format.      |
-| `msDuration`       | The duration of the recording in milliseconds. |
-| `mimeType`         | The MIME type of the recorded audio.           |
-| `path`             | The path to the audio file                     |
 
-| Error Code                  | Description                                          |
+| Error code                  | Description                                          |
 |-----------------------------|------------------------------------------------------|
-| `RECORDING_HAS_NOT_STARTED` | No recording in progress.                            |
-| `EMPTY_RECORDING`           | Recording stopped immediately after starting.        |
-| `FAILED_TO_FETCH_RECORDING` | Unknown error occurred while fetching the recording. |
+| `RECORDING_HAS_NOT_STARTED` | No recording in progress                             |
+| `EMPTY_RECORDING`           | Recording stopped immediately after starting         |
+| `FAILED_TO_FETCH_RECORDING` | Unknown error occurred while fetching the recording  |
 
-#### pauseRecording
+</br>
+
+### pauseRecording()
 
 Pause the ongoing audio recording.
 
 ```typescript
-VoiceRecorder.pauseRecording()
-    .then((result: GenericResponse) => console.log(result.value))
-    .catch(error => console.log(error));
+VoiceRecorder.pauseRecording() => Promise<boolean>
 ```
 
-| Return Value       | Description                    |
-|--------------------|--------------------------------|
-| `{ value: true }`  | Recording paused successfully. |
-| `{ value: false }` | Recording is already paused.   |
+**Returns:** <code>Promise&lt;boolean&gt;</code>
 
-| Error Code                  | Description                                        |
+`true` - recording paused successfully. \
+`false` - recording is already paused.
+
+| Error code                  | Description                                        |
 |-----------------------------|----------------------------------------------------|
-| `RECORDING_HAS_NOT_STARTED` | No recording in progress.                          |
-| `NOT_SUPPORTED_OS_VERSION`  | Operation not supported on the current OS version. |
+| `RECORDING_HAS_NOT_STARTED` | No recording in progress                           |
+| `NOT_SUPPORTED_OS_VERSION`  | Operation not supported on the current OS version  |
 
-#### resumeRecording
+</br>
+
+### resumeRecording()
+
+```typescript
+VoiceRecorder.resumeRecording() => Promise<boolean>
+```
 
 Resumes a paused audio recording.
 
-```typescript
-VoiceRecorder.resumeRecording()
-    .then((result: GenericResponse) => console.log(result.value))
-    .catch(error => console.log(error));
-```
+**Returns:** <code>Promise&lt;boolean&gt;</code>
 
-| Return Value       | Description                     |
-|--------------------|---------------------------------|
-| `{ value: true }`  | Recording resumed successfully. |
-| `{ value: false }` | Recording is already running.   |
+`true` - recording resumed successfully. \
+`false` - recording is already running.
 
 | Error Code                  | Description                                        |
 |-----------------------------|----------------------------------------------------|
-| `RECORDING_HAS_NOT_STARTED` | No recording in progress.                          |
-| `NOT_SUPPORTED_OS_VERSION`  | Operation not supported on the current OS version. |
+| `RECORDING_HAS_NOT_STARTED` | No recording in progress                           |
+| `NOT_SUPPORTED_OS_VERSION`  | Operation not supported on the current OS version  |
 
-### getCurrentStatus
+</br>
+
+### getCurrentRecordingStatus()
+
+```typescript
+VoiceRecorder.getCurrentStatus() => Promise<CurrentRecordingStatus>
+```
 
 Retrieves the current status of the recorder.
 
-```typescript
-VoiceRecorder.getCurrentStatus()
-    .then((result: CurrentRecordingStatus) => console.log(result.status))
-    .catch(error => console.log(error));
-```
-
-| Status Code | Description                                          |
-|-------------|------------------------------------------------------|
-| `NONE`      | Plugin is idle and waiting to start a new recording. |
-| `RECORDING` | Plugin is currently recording.                       |
-| `PAUSED`    | Recording is paused.                                 |
+**Returns:** <code>Promise&lt;<a href="#currentRecordingStatus">CurrentRecordingStatus</a>&gt;</code>
 
 
 ### Interfaces
@@ -216,25 +206,43 @@ VoiceRecorder.getCurrentStatus()
 
 | Prop             | Type                      | Description                     |
 |------------------|---------------------------|---------------------------------|
-| **`value`**      | ` 'granted' \| 'denied' ` |Permission status of recordind   |
+| `value`          | ` 'granted' \| 'denied' ` |Permission status of recordind   |
 
 
 #### RecordingOptions
 
-| Prop            | Type                                                               | Description                                 |
-|-----------------|--------------------------------------------------------------------|---------------------------------------------|
-| directory       | [Directory](https://capacitorjs.com/docs/apis/filesystem#directory)| Specifies a Capacitor Filesystem Directory  |
-| subDirectory    | string                                                             | Specifies a custom sub-directory (optional) |
-| encoder         | string                                                             |                                             |
-| extension       | string                                                             |                                             |
+| Prop            | Type                                                                 | Description                                 |
+|-----------------|----------------------------------------------------------------------|---------------------------------------------|
+| `directory`     | `[Directory](https://capacitorjs.com/docs/apis/filesystem#directory)`| Specifies a Capacitor Filesystem Directory  |
+| `subDirectory`  | `string`                                                             | Specifies a custom sub-directory (optional) |
+| `encoder`       | `string`                                                             |                                             |
+| `extension`     | `string`                                                             |                                             |
+
+
+#### RecordingData
+
+| Prop               | Type      | Description                                    |
+|--------------------|-----------|------------------------------------------------|
+| `recordDataBase64` | `string`  | The recorded audio data in Base64 format       |
+| `msDuration`       | `string`  | The duration of the recording in milliseconds  |
+| `mimeType`         | `string`  | The MIME type of the recorded audio            |
+| `path`             | `string`  | The path to the audio file                     |
+
+#### CurrentRecordingStatus
+
+| Status      | Description                                          |
+|-------------|------------------------------------------------------|
+| `NONE`      | Plugin is idle and waiting to start a new recording  |
+| `RECORDING` | Plugin is currently recording                        |
+| `PAUSED`    | Recording is paused                                  |
 
 ## Format and Mime type
 
 The plugin will return the recording in one of several possible formats.
-The format is dependent on the os / web browser that the user uses.
-On android and ios the mime type will be `audio/aac`, while on chrome and firefox it
-will be `audio/webm;codecs=opus` and on safari it will be `audio/mp4`.
-Note that these three browsers have been tested on.
+The format is dependent on the os/web browser that the user uses (by default
+on android and ios the mime type will be `audio/aac`, while on chrome and firefox it
+will be `audio/webm;codecs=opus` and on safari it will be `audio/mp4`). But you can specify `encoder` and `extoption` options within `VoiceRecorder.startRecording(...)` method.
+
 The plugin should still work on other browsers,
 as there is a list of mime types that the plugin checks against the user's browser.
 
