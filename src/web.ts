@@ -2,45 +2,47 @@ import { WebPlugin } from '@capacitor/core';
 
 import { VoiceRecorderImpl } from './VoiceRecorderImpl';
 import type {
-  CurrentRecordingStatus,
-  GenericResponse,
-  RecordingData,
-  RecordingOptions,
-  VoiceRecorderPlugin,
+    CurrentRecordingStatus,
+    RecordingData,
+    RecordingOptions,
+    VoiceRecorderPlugin,
+    RecordingPermissionStatus
 } from './definitions';
 
 export class VoiceRecorderWeb extends WebPlugin implements VoiceRecorderPlugin {
-  private voiceRecorderInstance = new VoiceRecorderImpl();
 
-  public canDeviceVoiceRecord(): Promise<GenericResponse> {
-    return VoiceRecorderImpl.canDeviceVoiceRecord();
-  }
+    private voiceRecorderInstance = new VoiceRecorderImpl();
 
-  public hasAudioRecordingPermission(): Promise<GenericResponse> {
-    return VoiceRecorderImpl.hasAudioRecordingPermission();
-  }
+    public canDeviceVoiceRecord(): Promise<boolean> {
+        return VoiceRecorderImpl.canDeviceVoiceRecord();
+    }
 
-  public requestAudioRecordingPermission(): Promise<GenericResponse> {
-    return VoiceRecorderImpl.requestAudioRecordingPermission();
-  }
+    public requestAudioRecordingPermission(): Promise<RecordingPermissionStatus> {
+        return VoiceRecorderImpl.requestAudioRecordingPermission();
+    }
 
-  public startRecording(options?: RecordingOptions): Promise<GenericResponse> {
-    return this.voiceRecorderInstance.startRecording(options);
-  }
+    public hasAudioRecordingPermission(): Promise<RecordingPermissionStatus> {
+        return VoiceRecorderImpl.hasAudioRecordingPermission();
+    }
 
-  public stopRecording(): Promise<RecordingData> {
-    return this.voiceRecorderInstance.stopRecording();
-  }
+    public startRecording(options?: RecordingOptions): Promise<void> {
+        return this.voiceRecorderInstance.startRecording(options);
+    }
 
-  public pauseRecording(): Promise<GenericResponse> {
-    return this.voiceRecorderInstance.pauseRecording();
-  }
+    public stopRecording(): Promise<RecordingData> {
+        return this.voiceRecorderInstance.stopRecording();
+    }
 
-  public resumeRecording(): Promise<GenericResponse> {
-    return this.voiceRecorderInstance.resumeRecording();
-  }
+    public pauseRecording(): Promise<boolean> {
+        return this.voiceRecorderInstance.pauseRecording();
+    }
 
-  public getCurrentStatus(): Promise<CurrentRecordingStatus> {
-    return this.voiceRecorderInstance.getCurrentStatus();
-  }
+    public resumeRecording(): Promise<boolean> {
+        return this.voiceRecorderInstance.resumeRecording();
+    }
+
+    public getCurrentRecordingStatus(): Promise<CurrentRecordingStatus> {
+        return this.voiceRecorderInstance.getCurrentStatus();
+    }
+    
 }

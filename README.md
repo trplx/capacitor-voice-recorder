@@ -230,11 +230,20 @@ Retrieves the current status of the recorder.
 
 #### CurrentRecordingStatus
 
-| Status      | Description                                          |
-|-------------|------------------------------------------------------|
-| `NONE`      | Plugin is idle and waiting to start a new recording  |
-| `RECORDING` | Plugin is currently recording                        |
-| `PAUSED`    | Recording is paused                                  |
+| Prop               | Type      | Description                                                |
+|--------------------|-----------|------------------------------------------------------------|
+| `status` | `[RecordingStatus](#RecordingStatus)` | The recorded audio data in Base64 format |
+
+
+### Enums
+
+#### RecordingStatus
+
+| Members     | Value       | Description                                          |
+|-------------|-------------|------------------------------------------------------|
+| `None`      | `NONE`      | Plugin is idle and waiting to start a new recording  |
+| `Recording` | `RECORDING` | Plugin is currently recording                        |
+| `Paused`    | `PAUSED`    | Recording is paused                                  |
 
 ## Format and Mime type
 

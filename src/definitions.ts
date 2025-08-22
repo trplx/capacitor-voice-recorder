@@ -2,50 +2,54 @@ import type { Directory } from '@capacitor/filesystem';
 
 export type Base64String = string;
 
-export interface RecordingData {
-  value: {
+export interface RecordingData {   
     recordDataBase64?: Base64String;
     msDuration: number;
     mimeType: string;
     path?: string;
-  };
 }
 
-export type RecordingOptions =
-  | never
-  | {
-      directory: Directory;
-      subDirectory?: string;
-    };
+export interface RecordingOptions {
+    directory: Directory;
+    subDirectory?: string;
+    encoder?: string;
+};
 
-export interface GenericResponse {
-  value: boolean;
+export interface RecordingPermissionStatus {
+    status: PermissionStatus;
 }
-
-export const RecordingStatus = {
-  RECORDING: 'RECORDING',
-  PAUSED: 'PAUSED',
-  NONE: 'NONE',
-} as const;
 
 export interface CurrentRecordingStatus {
-  status: (typeof RecordingStatus)[keyof typeof RecordingStatus];
+    status: RecordingStatus;
 }
 
+export enum RecordingStatus {
+    Recording = 'RECORDING',
+    Paused = 'PAUSED',
+    None = 'NONE',
+};
+
+export enum PermissionStatus {
+    Granted = 'GRANTED',
+    Denied = 'DENIED'
+};
+
 export interface VoiceRecorderPlugin {
-  canDeviceVoiceRecord(): Promise<GenericResponse>;
 
-  requestAudioRecordingPermission(): Promise<GenericResponse>;
+    canDeviceVoiceRecord(): Promise<boolean>;
 
-  hasAudioRecordingPermission(): Promise<GenericResponse>;
+    requestAudioRecordingPermission(): Promise<RecordingPermissionStatus>;
 
-  startRecording(options?: RecordingOptions): Promise<GenericResponse>;
+    hasAudioRecordingPermission(): Promise<RecordingPermissionStatus>;
 
-  stopRecording(): Promise<RecordingData>;
+    startRecording(options?: RecordingOptions): Promise<void>;
 
-  pauseRecording(): Promise<GenericResponse>;
+    stopRecording(): Promise<RecordingData>;
 
-  resumeRecording(): Promise<GenericResponse>;
+    pauseRecording(): Promise<boolean>;
 
-  getCurrentStatus(): Promise<CurrentRecordingStatus>;
+    resumeRecording(): Promise<boolean>;
+
+    getCurrentRecordingStatus(): Promise<CurrentRecordingStatus>;
+
 }
