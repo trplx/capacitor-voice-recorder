@@ -2,43 +2,31 @@
   <img src="https://user-images.githubusercontent.com/236501/85893648-1c92e880-b7a8-11ea-926d-95355b8175c7.png" width="128" height="128" />
 </p>
 <h3 align="center">Capacitor Voice Recorder</h3>
-<p align="center"><strong><code>tchvu3/capacitor-voice-recorder</code></strong></p>
-<p align="center">Capacitor plugin for simple voice recording</p>
+<p align="center"><strong><code>@trplx/capacitor-voice-recorder</code></strong></p>
+<p align="center">Capacitor plugin for simple voice recording. </p>
+<p align="center">This is fork of <a href="https://github.com/tchvu3/capacitor-voice-recorder">tchvu3/capacitor-voice-recorder</a> plugin.</p>
+ 
 
-<p align="center">
-  <img src="https://img.shields.io/maintenance/yes/2025" />
-  <a href="https://www.npmjs.com/package/capacitor-voice-recorder"><img src="https://img.shields.io/npm/l/capacitor-voice-recorder" /></a>
-<br>
-  <a href="https://www.npmjs.com/package/capacitor-voice-recorder"><img src="https://img.shields.io/npm/dw/capacitor-voice-recorder" /></a>
-  <a href="https://www.npmjs.com/package/capacitor-voice-recorder"><img src="https://img.shields.io/npm/v/capacitor-voice-recorder" /></a>
-</p>
 
-## Maintainers
+## Supported platforms
 
-| Maintainer   | GitHub                              |
-|--------------|-------------------------------------|
-| Avihu Harush | [tchvu3](https://github.com/tchvu3) |
+| Platform | Availability |
+|:-------- |:------------ |
+| iOS      |     ✅      | 
+| Android  |     ✅      | 
+| Web      |     ✅      |
 
-## Installation
+
+## Install
 
 ```
-npm install --save capacitor-voice-recorder
+npm install --save @trplx/capacitor-voice-recorder
 npx cap sync
 ```
 
-## Configuration
+## iOS
 
-### Using with Android
-
-Add the following to your `AndroidManifest.xml`:
-
-```xml
-<uses-permission android:name="android.permission.RECORD_AUDIO" />
-```
-
-### Using with iOS
-
-Add the following to your `Info.plist`:
+Add the following usage description to your `Info.plist`:
 
 ```xml
 
@@ -46,95 +34,109 @@ Add the following to your `Info.plist`:
 <string>This app uses the microphone to record audio.</string>
 ```
 
-## Supported methods
+## Android
 
-| Name                            | Android | iOS | Web |
-|:--------------------------------|:--------|:----|:----|
-| canDeviceVoiceRecord            | ✅       | ✅   | ✅   |
-| requestAudioRecordingPermission | ✅       | ✅   | ✅   |
-| hasAudioRecordingPermission     | ✅       | ✅   | ✅   |
-| startRecording                  | ✅       | ✅   | ✅   |
-| stopRecording                   | ✅       | ✅   | ✅   |
-| pauseRecording                  | ✅       | ✅   | ✅   |
-| resumeRecording                 | ✅       | ✅   | ✅   |
-| getCurrentStatus                | ✅       | ✅   | ✅   |
+Add the following permission to your `AndroidManifest.xml`:
 
-## Overview
+```xml
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+```
 
-The `capacitor-voice-recorder` plugin allows you to record audio on Android, iOS, and Web platforms.
-Below is a summary
-of the key methods and how to use them.
 
-### Checking Device Capabilities and Permissions
+## API
 
-#### canDeviceVoiceRecord
+* [`canDeviceVoiceRecord()`](#canDeviceVoiceRecord())
+* [`requestAudioRecordingPermission()`](#requestAudioRecordingPermission())
+* [`hasAudioRecordingPermission()`](#hasAudioRecordingPermission())
+* [`startRecording(...)`](#startRecording(...))
+* [`stopRecording()`](#stopRecording())
+* [`pauseRecording()`](#pauseRecording())
+* [`resumeRecording()`](#resumeRecording())
+* [`getCurrentRecordingStatus()`](#getCurrentRecordingStatus())
+
+</br>
+
+--------------------
+
+</br>
+
+### canDeviceVoiceRecord()
+
+```typescript
+VoiceRecorder.canDeviceVoiceRecord() => Promise<boolean>
+```
 
 Check if the device/browser can record audio.
 
+**Returns:** <code>Promise&lt;boolean&gt;</code>
+
+
+`true` - the device/browser can record audio. \
+`false` - the browser cannot record audio (on mobile it always returns `true`). 
+
+</br>
+
+--------------------
+
+</br>
+
+
+### requestAudioRecordingPermission()
+
 ```typescript
-VoiceRecorder.canDeviceVoiceRecord().then((result: GenericResponse) => console.log(result.value));
+VoiceRecorder.requestAudioRecordingPermission() => Promise<PermissionStatus>
 ```
-
-| Return Value       | Description                                                                            |
-|--------------------|----------------------------------------------------------------------------------------|
-| `{ value: true }`  | The device/browser can record audio.                                                   |
-| `{ value: false }` | The browser cannot record audio. Note: On mobile, it always returns `{ value: true }`. |
-
-#### requestAudioRecordingPermission
 
 Request audio recording permission from the user.
 
+**Returns:** <code>Promise&lt;<a href="#permissionstatus">PermissionStatus</a>&gt;</code>
+
+</br>
+
+--------------------
+
+</br>
+
+### hasAudioRecordingPermission()
+
 ```typescript
-VoiceRecorder.requestAudioRecordingPermission().then((result: GenericResponse) => console.log(result.value));
+VoiceRecorder.hasAudioRecordingPermission() => Promise<PermissionStatus>
 ```
-
-| Return Value       | Description         |
-|--------------------|---------------------|
-| `{ value: true }`  | Permission granted. |
-| `{ value: false }` | Permission denied.  |
-
-#### hasAudioRecordingPermission
 
 Check if the audio recording permission has been granted.
 
-```typescript
-VoiceRecorder.hasAudioRecordingPermission().then((result: GenericResponse) => console.log(result.value));
-```
+**Returns:** <code>Promise&lt;<a href="#permissionstatus">PermissionStatus</a>&gt;</code>
 
-| Return Value       | Description         |
-|--------------------|---------------------|
-| `{ value: true }`  | Permission granted. |
-| `{ value: false }` | Permission denied.  |
 
-| Error Code                          | Description                        |
+| Error code                          | Description                        |
 |-------------------------------------|------------------------------------|
 | `COULD_NOT_QUERY_PERMISSION_STATUS` | Failed to query permission status. |
 
-### Managing Recording
 
-#### startRecording
+</br>
+
+--------------------
+
+</br>
+
+### startRecording(...)
+
+```typescript
+VoiceRecorder.startRecording(options?: RecordingOptions) => Promise<void>
+```
 
 Start the audio recording.
 
-Optional options can be used with this method to save the file in the device's filesystem and return a path to that file instead of a base64 string.
-This greatly increases performance for large files.
+Optional options can be used with this method to save the file in the device's filesystem and return a path to that file instead of a base64 string. This greatly increases performance for large files.
 
-```typescript
-VoiceRecorder.startRecording(options?: RecordingOptions)
-    .then((result: GenericResponse) => console.log(result.value))
-    .catch(error => console.log(error));
-```
+| Param         | Type                                                          |
+| ------------- | ------------------------------------------------------------- |
+| **`options`** | <code><a href="#recordingOptions">RecordingOptions</a></code> |
 
-| Option            | Description                                                                                          |
-|-------------------|------------------------------------------------------------------------------------------------------|
-| directory         | Specifies a Capacitor Filesystem [Directory](https://capacitorjs.com/docs/apis/filesystem#directory) |
-| subDirectory      | Specifies a custom sub-directory (optional)                                                          |
 
-| Return Value      | Description                     |
-|-------------------|---------------------------------|
-| `{ value: true }` | Recording started successfully. |
+**Returns:** <code>Promise&lt;void&gt;</code>
 
-| Error Code                   | Description                              |
+| Error code                   | Description                              |
 |------------------------------|------------------------------------------|
 | `MISSING_PERMISSION`         | Required permission is missing.          |
 | `DEVICE_CANNOT_VOICE_RECORD` | Device/browser cannot record audio.      |
@@ -142,7 +144,13 @@ VoiceRecorder.startRecording(options?: RecordingOptions)
 | `MICROPHONE_BEING_USED`      | Microphone is being used by another app. |
 | `FAILED_TO_RECORD`           | Unknown error occurred during recording. |
 
-#### stopRecording
+</br>
+
+--------------------
+
+</br>
+
+### stopRecording
 
 Stops the audio recording and returns the recording data.
 
@@ -207,7 +215,7 @@ VoiceRecorder.resumeRecording()
 | `RECORDING_HAS_NOT_STARTED` | No recording in progress.                          |
 | `NOT_SUPPORTED_OS_VERSION`  | Operation not supported on the current OS version. |
 
-#### getCurrentStatus
+### getCurrentStatus
 
 Retrieves the current status of the recorder.
 
@@ -222,6 +230,25 @@ VoiceRecorder.getCurrentStatus()
 | `NONE`      | Plugin is idle and waiting to start a new recording. |
 | `RECORDING` | Plugin is currently recording.                       |
 | `PAUSED`    | Recording is paused.                                 |
+
+
+### Interfaces
+
+#### PermissionStatus
+
+| Prop             | Type                      | Description                     |
+|------------------|---------------------------|---------------------------------|
+| **`value`**      | ` 'granted' \| 'denied' ` |Permission status of recordind   |
+
+
+#### RecordingOptions
+
+| Prop            | Type                                                               | Description                                 |
+|-----------------|--------------------------------------------------------------------|---------------------------------------------|
+| directory       | [Directory](https://capacitorjs.com/docs/apis/filesystem#directory)| Specifies a Capacitor Filesystem Directory  |
+| subDirectory    | string                                                             | Specifies a custom sub-directory (optional) |
+| encoder         | string                                                             |                                             |
+| extension       | string                                                             |                                             |
 
 ## Format and Mime type
 
@@ -299,16 +326,8 @@ You can find each version in its own dedicated branch.
 | 6.*            | 6                 |
 | 7.*            | 7                 |
 
-## Donation
-
-If you enjoy my work and find it useful, feel free to invite me to a cup of coffee :)
-
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/tchvu3)
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
 
-### Credit
-
-Thanks to independo-gmbh for the readme update.
