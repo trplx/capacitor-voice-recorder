@@ -45,18 +45,14 @@ Add the following permission to your `AndroidManifest.xml`:
 
 ## API
 
-* [`canDeviceVoiceRecord()`](#canDeviceVoiceRecord())
-* [`requestAudioRecordingPermission()`](#requestAudioRecordingPermission())
-* [`hasAudioRecordingPermission()`](#hasAudioRecordingPermission())
-* [`startRecording(...)`](#startRecording(...))
-* [`stopRecording()`](#stopRecording())
-* [`pauseRecording()`](#pauseRecording())
-* [`resumeRecording()`](#resumeRecording())
-* [`getCurrentRecordingStatus()`](#getCurrentRecordingStatus())
-
-</br>
-
---------------------
+* [`canDeviceVoiceRecord()`](#canDeviceVoiceRecord)
+* [`requestAudioRecordingPermission()`](#requestAudioRecordingPermission)
+* [`hasAudioRecordingPermission()`](#hasAudioRecordingPermission)
+* [`startRecording(...)`](#startRecording)
+* [`stopRecording()`](#stopRecording)
+* [`pauseRecording()`](#pauseRecording)
+* [`resumeRecording()`](#resumeRecording)
+* [`getCurrentRecordingStatus()`](#getCurrentRecordingStatus)
 
 </br>
 
@@ -76,11 +72,6 @@ Check if the device/browser can record audio.
 
 </br>
 
---------------------
-
-</br>
-
-
 ### requestAudioRecordingPermission()
 
 ```typescript
@@ -90,10 +81,6 @@ VoiceRecorder.requestAudioRecordingPermission() => Promise<PermissionStatus>
 Request audio recording permission from the user.
 
 **Returns:** <code>Promise&lt;<a href="#permissionstatus">PermissionStatus</a>&gt;</code>
-
-</br>
-
---------------------
 
 </br>
 
@@ -111,11 +98,6 @@ Check if the audio recording permission has been granted.
 | Error code                          | Description                        |
 |-------------------------------------|------------------------------------|
 | `COULD_NOT_QUERY_PERMISSION_STATUS` | Failed to query permission status. |
-
-
-</br>
-
---------------------
 
 </br>
 
@@ -143,10 +125,6 @@ Optional options can be used with this method to save the file in the device's f
 | `ALREADY_RECORDING`          | A recording is already in progress.      |
 | `MICROPHONE_BEING_USED`      | Microphone is being used by another app. |
 | `FAILED_TO_RECORD`           | Unknown error occurred during recording. |
-
-</br>
-
---------------------
 
 </br>
 
