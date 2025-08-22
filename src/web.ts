@@ -21,8 +21,8 @@ export class VoiceRecorderWeb extends WebPlugin implements VoiceRecorderPlugin {
         return VoiceRecorderImpl.requestAudioRecordingPermission();
     }
 
-    public hasAudioRecordingPermission(): Promise<RecordingPermissionStatus> {
-        return VoiceRecorderImpl.hasAudioRecordingPermission();
+    public getAudioRecordingPermissionStatus(): Promise<RecordingPermissionStatus> {
+        return VoiceRecorderImpl.getAudioRecordingPermissionStatus();
     }
 
     public startRecording(options?: RecordingOptions): Promise<void> {

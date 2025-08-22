@@ -47,7 +47,7 @@ export class VoiceRecorderImpl {
     }
 
     public static async requestAudioRecordingPermission(): Promise<RecordingPermissionStatus> {
-        const havingPermission: RecordingPermissionStatus = await VoiceRecorderImpl.hasAudioRecordingPermission()
+        const havingPermission: RecordingPermissionStatus = await VoiceRecorderImpl.getAudioRecordingPermissionStatus()
             .catch(() => {
                 return { status: PermissionStatus.Denied } as RecordingPermissionStatus;
             });
@@ -66,7 +66,7 @@ export class VoiceRecorderImpl {
             });
     }
 
-    public static async hasAudioRecordingPermission(): Promise<RecordingPermissionStatus> {
+    public static async getAudioRecordingPermissionStatus(): Promise<RecordingPermissionStatus> {
         if (navigator.permissions.query == null) {
             if (navigator.mediaDevices == null) {
                 return Promise.reject(couldNotQueryPermissionStatusError());
@@ -104,7 +104,7 @@ export class VoiceRecorderImpl {
             throw deviceCannotVoiceRecordError();
         }
 
-        const havingPermission: RecordingPermissionStatus = await VoiceRecorderImpl.hasAudioRecordingPermission()
+        const havingPermission: RecordingPermissionStatus = await VoiceRecorderImpl.getAudioRecordingPermissionStatus()
             .catch(() => {
                 return { status: PermissionStatus.Denied } as RecordingPermissionStatus;
             });
