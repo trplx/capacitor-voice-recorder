@@ -5,13 +5,13 @@ public class RecordOptions {
     private String directory;
     private String subDirectory;
     private String audioEncoder;
-    private String extention;
+    private String extension;
 
-    public RecordOptions(String directory, String subDirectory, String audioEncoder, String extention) {
+    public RecordOptions(String directory, String subDirectory, String audioEncoder, String extension) {
         this.directory = directory;
         this.subDirectory = subDirectory;
         this.audioEncoder = audioEncoder;
-        this.extention = extention;
+        this.extension = extension;
     }
 
     public String getDirectory() {
@@ -26,8 +26,8 @@ public class RecordOptions {
         return audioEncoder;
     }
 
-    public String getExtention() {
-        return extention;
+    public String getExtension() {
+        return extension;
     }
 
     public void setSubDirectory(String subDirectory) {

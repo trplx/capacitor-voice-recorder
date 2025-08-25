@@ -72,7 +72,7 @@ public class CustomMediaRecorder {
             }
         }
 
-        String extension = options.getExtention();
+        String extension = options.getExtension();
 
         if (extension == null) {
             extension = ".aac";

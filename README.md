@@ -215,7 +215,7 @@ Retrieves the current status of the recorder.
 |-----------------|----------------------------------------------------------------------|---------------------------------------------|
 | `directory`     | `[Directory](https://capacitorjs.com/docs/apis/filesystem#directory)`| Specifies a Capacitor Filesystem Directory  |
 | `subDirectory`  | `string`                                                             | Specifies a custom sub-directory (optional) |
-| `encoder`       | `string`                                                             |                                             |
+| `audioEncoder`  | `string`                                                             |                                             |
 | `extension`     | `string`                                                             |                                             |
 
 

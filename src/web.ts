@@ -4,7 +4,6 @@ import { VoiceRecorderImpl } from './VoiceRecorderImpl';
 import type {
     CurrentRecordingStatus,
     RecordingData,
-    RecordingOptions,
     VoiceRecorderPlugin,
     RecordingPermissionStatus
 } from './definitions';
@@ -25,8 +24,8 @@ export class VoiceRecorderWeb extends WebPlugin implements VoiceRecorderPlugin {
         return VoiceRecorderImpl.getAudioRecordingPermissionStatus();
     }
 
-    public startRecording(options?: RecordingOptions): Promise<void> {
-        return this.voiceRecorderInstance.startRecording(options);
+    public startRecording(): Promise<void> {
+        return this.voiceRecorderInstance.startRecording();
     }
 
     public stopRecording(): Promise<RecordingData> {

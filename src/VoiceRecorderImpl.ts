@@ -92,7 +92,7 @@ export class VoiceRecorderImpl {
             });
     }
 
-    public async startRecording(options?: RecordingOptions): Promise<void> {
+    public async startRecording(): Promise<void> {
 
         if (this.mediaRecorder != null) {
             throw alreadyRecordingError();
@@ -115,7 +115,7 @@ export class VoiceRecorderImpl {
 
         return navigator.mediaDevices
             .getUserMedia({ audio: true })
-            .then((stream) => this.onSuccessfullyStartedRecording(stream, options))
+            .then((stream) => this.onSuccessfullyStartedRecording(stream))
             .catch(this.onFailedToStartRecording.bind(this));
     }
 

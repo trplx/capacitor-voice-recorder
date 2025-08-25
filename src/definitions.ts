@@ -14,7 +14,7 @@ export interface RecordingOptions {
     subDirectory?: string;
     audioEncoder?: 'AAC' | 'AAC_ELD'| 'OPUS';
     // outputFormat?: 'AAC_ADTS' | 'MPEG_4'; 
-    extention?: '.aac' | '.mp4' | '.m4a';
+    extension?: '.aac' | '.mp4' | '.m4a';
 };
 
 export interface RecordingPermissionStatus {
