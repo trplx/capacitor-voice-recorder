@@ -17,6 +17,10 @@ export interface RecordingOptions {
     extension?: '.aac' | '.mp4' | '.m4a';
 };
 
+export interface GenericResponse {
+    value: boolean;
+}
+
 export interface RecordingPermissionStatus {
     status: PermissionStatus;
 }
@@ -38,7 +42,7 @@ export enum PermissionStatus {
 
 export interface VoiceRecorderPlugin {
 
-    canDeviceVoiceRecord(): Promise<boolean>;
+    canDeviceVoiceRecord(): Promise<GenericResponse>;
 
     requestAudioRecordingPermission(): Promise<RecordingPermissionStatus>;
 
@@ -48,9 +52,9 @@ export interface VoiceRecorderPlugin {
 
     stopRecording(): Promise<RecordingData>;
 
-    pauseRecording(): Promise<boolean>;
+    pauseRecording(): Promise<GenericResponse>;
 
-    resumeRecording(): Promise<boolean>;
+    resumeRecording(): Promise<GenericResponse>;
 
     getCurrentRecordingStatus(): Promise<CurrentRecordingStatus>;
 

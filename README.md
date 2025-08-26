@@ -59,12 +59,12 @@ Add the following permission to your `AndroidManifest.xml`:
 ### canDeviceVoiceRecord()
 
 ```typescript
-VoiceRecorder.canDeviceVoiceRecord() => Promise<boolean>
+VoiceRecorder.canDeviceVoiceRecord() => Promise<GenericResponse>
 ```
 
 Check if the device/browser can record audio.
 
-**Returns:** <code>Promise&lt;boolean&gt;</code>
+**Returns:** <code>Promise&lt;<a href="#genericResponse">GenericResponse</a>&gt;</code>
 
 
 `true` - the device/browser can record audio. \
@@ -75,24 +75,24 @@ Check if the device/browser can record audio.
 ### requestAudioRecordingPermission()
 
 ```typescript
-VoiceRecorder.requestAudioRecordingPermission() => Promise<PermissionStatus>
+VoiceRecorder.requestAudioRecordingPermission() => Promise<RecordingPermissionStatus>
 ```
 
 Request audio recording permission from the user.
 
-**Returns:** <code>Promise&lt;<a href="#permissionstatus">PermissionStatus</a>&gt;</code>
+**Returns:** <code>Promise&lt;<a href="#recordingPermissionStatus">RecordingPermissionStatus</a>&gt;</code>
 
 </br>
 
-### hasAudioRecordingPermission()
+### getAudioRecordingPermissionStatus()
 
 ```typescript
-VoiceRecorder.hasAudioRecordingPermission() => Promise<PermissionStatus>
+VoiceRecorder.getAudioRecordingPermissionStatus() => Promise<RecordingPermissionStatus>
 ```
 
 Check if the audio recording permission has been granted.
 
-**Returns:** <code>Promise&lt;<a href="#permissionstatus">PermissionStatus</a>&gt;</code>
+**Returns:** <code>Promise&lt;<a href="#RecordingPermissionStatus">RecordingPermissionStatus</a>&gt;</code>
 
 
 | Error code                          | Description                        |
@@ -154,10 +154,10 @@ When a `directory` option has been passed to the `VoiceRecorder.startRecording()
 Pause the ongoing audio recording.
 
 ```typescript
-VoiceRecorder.pauseRecording() => Promise<boolean>
+VoiceRecorder.pauseRecording() => Promise<GenericResponse>
 ```
 
-**Returns:** <code>Promise&lt;boolean&gt;</code>
+**Returns:** <code>Promise&lt;<a href="#genericResponse">GenericResponse</a>&gt;</code>
 
 `true` - recording paused successfully. \
 `false` - recording is already paused.
@@ -172,12 +172,12 @@ VoiceRecorder.pauseRecording() => Promise<boolean>
 ### resumeRecording()
 
 ```typescript
-VoiceRecorder.resumeRecording() => Promise<boolean>
+VoiceRecorder.resumeRecording() => Promise<GenericResponse>
 ```
 
 Resumes a paused audio recording.
 
-**Returns:** <code>Promise&lt;boolean&gt;</code>
+**Returns:** <code>Promise&lt;<a href="#genericResponse">GenericResponse</a>&gt;</code>
 
 `true` - recording resumed successfully. \
 `false` - recording is already running.
@@ -202,11 +202,17 @@ Retrieves the current status of the recorder.
 
 ### Interfaces
 
-#### PermissionStatus
+#### GenericResponse
 
 | Prop             | Type                      | Description                     |
 |------------------|---------------------------|---------------------------------|
-| `value`          | ` 'granted' \| 'denied' ` |Permission status of recordind   |
+| `value`          | `boolean`                 |The true or false value          |
+
+#### RecordingPermissionStatus
+
+| Prop             | Type                                    | Description                     |
+|------------------|-----------------------------------------|---------------------------------|
+| `status`         | `[PermissionStatus](#PermissionStatus)` | Permission status of recordind  |
 
 
 #### RecordingOptions
@@ -244,6 +250,13 @@ Retrieves the current status of the recorder.
 | `None`      | `NONE`      | Plugin is idle and waiting to start a new recording  |
 | `Recording` | `RECORDING` | Plugin is currently recording                        |
 | `Paused`    | `PAUSED`    | Recording is paused                                  |
+
+#### PermissionStatus
+
+| Members     | Value       | Description                                          |
+|-------------|-------------|------------------------------------------------------|
+| `None`      | `NONE`      | Plugin is idle and waiting to start a new recording  |
+| `Recording` | `RECORDING` | Plugin is currently recording                        |
 
 ## Format and Mime type
 

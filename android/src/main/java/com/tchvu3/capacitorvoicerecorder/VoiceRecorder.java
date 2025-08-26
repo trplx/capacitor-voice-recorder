@@ -27,6 +27,7 @@ public class VoiceRecorder extends Plugin {
     static final String RECORD_AUDIO_ALIAS = "voice recording";
     private CustomMediaRecorder mediaRecorder;
 
+
     @PluginMethod
     public void canDeviceVoiceRecord(PluginCall call) {
         if (CustomMediaRecorder.canPhoneCreateMediaRecorder(getContext())) {
@@ -39,7 +40,7 @@ public class VoiceRecorder extends Plugin {
     @PluginMethod
     public void requestAudioRecordingPermission(PluginCall call) {
         if (doesUserGaveAudioRecordingPermission()) {
-            call.resolve(ResponseGenerator.successResponse());
+            call.resolve(ResponseGenerator.permissionStatusResponse(PermissionState.GRANTED));
         } else {
             requestPermissionForAlias(RECORD_AUDIO_ALIAS, call, "recordAudioPermissionCallback");
         }
@@ -47,12 +48,16 @@ public class VoiceRecorder extends Plugin {
 
     @PermissionCallback
     private void recordAudioPermissionCallback(PluginCall call) {
-        this.hasAudioRecordingPermission(call);
+        this.getAudioRecordingPermissionStatus(call);
     }
 
     @PluginMethod
-    public void hasAudioRecordingPermission(PluginCall call) {
-        call.resolve(ResponseGenerator.fromBoolean(doesUserGaveAudioRecordingPermission()));
+    public void getAudioRecordingPermissionStatus(PluginCall call) {
+        if (doesUserGaveAudioRecordingPermission()) {
+            call.resolve(ResponseGenerator.permissionStatusResponse(PermissionState.GRANTED));
+        } else {
+            call.resolve(ResponseGenerator.permissionStatusResponse(PermissionState.DENIED));
+        }
     }
 
     @PluginMethod
@@ -60,21 +65,25 @@ public class VoiceRecorder extends Plugin {
 
         if (!CustomMediaRecorder.canPhoneCreateMediaRecorder(getContext())) {
             call.reject(Messages.CANNOT_RECORD_ON_THIS_PHONE);
+
             return;
         }
 
         if (!doesUserGaveAudioRecordingPermission()) {
             call.reject(Messages.MISSING_PERMISSION);
+
             return;
         }
 
         if (this.isMicrophoneOccupied()) {
             call.reject(Messages.MICROPHONE_BEING_USED);
+
             return;
         }
 
         if (mediaRecorder != null) {
             call.reject(Messages.ALREADY_RECORDING);
+
             return;
         }
 
@@ -87,7 +96,7 @@ public class VoiceRecorder extends Plugin {
             RecordOptions options = new RecordOptions(directory, subDirectory, audioEncoder, extension);
             mediaRecorder = new CustomMediaRecorder(getContext(), options);
             mediaRecorder.startRecording();
-            call.resolve(ResponseGenerator.successResponse());
+            call.resolve();
         } catch (Exception exp) {
             mediaRecorder = null;
             call.reject(Messages.FAILED_TO_RECORD, exp);
@@ -98,6 +107,7 @@ public class VoiceRecorder extends Plugin {
     public void stopRecording(PluginCall call) {
         if (mediaRecorder == null) {
             call.reject(Messages.RECORDING_HAS_NOT_STARTED);
+
             return;
         }
 
@@ -126,7 +136,7 @@ public class VoiceRecorder extends Plugin {
             if ((recordDataBase64 == null && path == null) || recordData.getMsDuration() < 0) {
                 call.reject(Messages.EMPTY_RECORDING);
             } else {
-                call.resolve(ResponseGenerator.dataResponse(recordData.toJSObject()));
+                call.resolve(recordData.toJSObject());
             }
         } catch (Exception exp) {
             call.reject(Messages.FAILED_TO_FETCH_RECORDING, exp);
@@ -147,7 +157,7 @@ public class VoiceRecorder extends Plugin {
             return;
         }
         try {
-            call.resolve(ResponseGenerator.fromBoolean(mediaRecorder.pauseRecording()));
+            call.resolve(ResponseGenerator.fromBooleanResponse(mediaRecorder.pauseRecording()));
         } catch (NotSupportedOsVersion exception) {
             call.reject(Messages.NOT_SUPPORTED_OS_VERSION);
         }
@@ -160,7 +170,7 @@ public class VoiceRecorder extends Plugin {
             return;
         }
         try {
-            call.resolve(ResponseGenerator.fromBoolean(mediaRecorder.resumeRecording()));
+            call.resolve(ResponseGenerator.fromBooleanResponse(mediaRecorder.resumeRecording()));
         } catch (NotSupportedOsVersion exception) {
             call.reject(Messages.NOT_SUPPORTED_OS_VERSION);
         }
@@ -169,9 +179,9 @@ public class VoiceRecorder extends Plugin {
     @PluginMethod
     public void getCurrentStatus(PluginCall call) {
         if (mediaRecorder == null) {
-            call.resolve(ResponseGenerator.statusResponse(CurrentRecordingStatus.NONE));
+            call.resolve(ResponseGenerator.recordingStatusResponse(CurrentRecordingStatus.NONE));
         } else {
-            call.resolve(ResponseGenerator.statusResponse(mediaRecorder.getCurrentStatus()));
+            call.resolve(ResponseGenerator.recordingStatusResponse(mediaRecorder.getCurrentStatus()));
         }
     }
 
@@ -182,6 +192,7 @@ public class VoiceRecorder extends Plugin {
     private String readRecordedFileAsBase64(File recordedFile) {
         BufferedInputStream bufferedInputStream;
         byte[] bArray = new byte[(int) recordedFile.length()];
+
         try {
             bufferedInputStream = new BufferedInputStream(new FileInputStream(recordedFile));
             bufferedInputStream.read(bArray);
@@ -189,6 +200,7 @@ public class VoiceRecorder extends Plugin {
         } catch (IOException exp) {
             return null;
         }
+
         return Base64.encodeToString(bArray, Base64.DEFAULT);
     }
 
@@ -206,6 +218,8 @@ public class VoiceRecorder extends Plugin {
     private boolean isMicrophoneOccupied() {
         AudioManager audioManager = (AudioManager) this.getContext().getSystemService(Context.AUDIO_SERVICE);
         if (audioManager == null) return true;
+
         return audioManager.getMode() != AudioManager.MODE_NORMAL;
     }
+
 }

@@ -1,5 +1,8 @@
-export const successResponse = (): boolean => true;
-export const failureResponse = (): boolean => false;
+import type { GenericResponse } from './definitions';
+
+
+export const successResponse = (): GenericResponse => ({ value: true });
+export const failResponse = (): GenericResponse => ({ value: false });
 
 export const missingPermissionError = (): Error => new Error('MISSING_PERMISSION');
 export const alreadyRecordingError = (): Error => new Error('ALREADY_RECORDING');

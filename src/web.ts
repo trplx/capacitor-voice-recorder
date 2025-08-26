@@ -5,14 +5,15 @@ import type {
     CurrentRecordingStatus,
     RecordingData,
     VoiceRecorderPlugin,
-    RecordingPermissionStatus
+    RecordingPermissionStatus,
+    GenericResponse
 } from './definitions';
 
 export class VoiceRecorderWeb extends WebPlugin implements VoiceRecorderPlugin {
 
     private voiceRecorderInstance = new VoiceRecorderImpl();
 
-    public canDeviceVoiceRecord(): Promise<boolean> {
+    public canDeviceVoiceRecord(): Promise<GenericResponse> {
         return VoiceRecorderImpl.canDeviceVoiceRecord();
     }
 
@@ -32,11 +33,11 @@ export class VoiceRecorderWeb extends WebPlugin implements VoiceRecorderPlugin {
         return this.voiceRecorderInstance.stopRecording();
     }
 
-    public pauseRecording(): Promise<boolean> {
+    public pauseRecording(): Promise<GenericResponse> {
         return this.voiceRecorderInstance.pauseRecording();
     }
 
-    public resumeRecording(): Promise<boolean> {
+    public resumeRecording(): Promise<GenericResponse> {
         return this.voiceRecorderInstance.resumeRecording();
     }
 

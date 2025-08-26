@@ -160,7 +160,7 @@ public class CustomMediaRecorder {
     private static boolean canPhoneCreateMediaRecorderWhileHavingPermission(Context context) {
         CustomMediaRecorder tempMediaRecorder = null;
         try {
-            tempMediaRecorder = new CustomMediaRecorder(context, new RecordOptions(null, null));
+            tempMediaRecorder = new CustomMediaRecorder(context, new RecordOptions(null, null, null, null));
             tempMediaRecorder.startRecording();
             tempMediaRecorder.stopRecording();
             return true;

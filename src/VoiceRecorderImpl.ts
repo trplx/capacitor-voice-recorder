@@ -6,7 +6,8 @@ import type {
     CurrentRecordingStatus,
     RecordingPermissionStatus,
     RecordingData,
-    RecordingOptions
+    RecordingOptions,
+    GenericResponse
 } from './definitions';
 import { RecordingStatus, PermissionStatus } from './definitions';
 import {
@@ -16,7 +17,7 @@ import {
     emptyRecordingError,
     failedToFetchRecordingError,
     failedToRecordError,
-    failureResponse,
+    failResponse,
     missingPermissionError,
     recordingHasNotStartedError,
     successResponse,
@@ -38,9 +39,9 @@ export class VoiceRecorderImpl {
     private chunks: any[] = [];
     private pendingResult: Promise<RecordingData> = neverResolvingPromise();
 
-    public static async canDeviceVoiceRecord(): Promise<boolean> {
+    public static async canDeviceVoiceRecord(): Promise<GenericResponse> {
         if (navigator?.mediaDevices?.getUserMedia == null || VoiceRecorderImpl.getSupportedMimeType() == null) {
-            return failureResponse();
+            return failResponse();
         } else {
             return successResponse();
         }
@@ -98,9 +99,9 @@ export class VoiceRecorderImpl {
             throw alreadyRecordingError();
         }
 
-        const deviceCanRecord: boolean = await VoiceRecorderImpl.canDeviceVoiceRecord();
+        const deviceCanRecord: GenericResponse = await VoiceRecorderImpl.canDeviceVoiceRecord();
 
-        if (!deviceCanRecord) {
+        if (!deviceCanRecord.value) {
             throw deviceCannotVoiceRecordError();
         }
 
@@ -135,25 +136,25 @@ export class VoiceRecorderImpl {
         }
     }    
 
-    public pauseRecording(): Promise<boolean> {
+    public pauseRecording(): Promise<GenericResponse> {
         if (this.mediaRecorder == null) {
             throw recordingHasNotStartedError();
         } else if (this.mediaRecorder.state === 'recording') {
             this.mediaRecorder.pause();
             return Promise.resolve(successResponse());
         } else {
-            return Promise.resolve(failureResponse());
+            return Promise.resolve(failResponse());
         }
     }
 
-    public resumeRecording(): Promise<boolean> {
+    public resumeRecording(): Promise<GenericResponse> {
         if (this.mediaRecorder == null) {
             throw recordingHasNotStartedError();
         } else if (this.mediaRecorder.state === 'paused') {
             this.mediaRecorder.resume();
             return Promise.resolve(successResponse());
         } else {
-            return Promise.resolve(failureResponse());
+            return Promise.resolve(failResponse());
         }
     }
 

@@ -48,6 +48,7 @@ public class RecordData {
         toReturn.put("msDuration", msDuration);
         toReturn.put("mimeType", mimeType);
         toReturn.put("path", path);
+
         return toReturn;
     }
 }
