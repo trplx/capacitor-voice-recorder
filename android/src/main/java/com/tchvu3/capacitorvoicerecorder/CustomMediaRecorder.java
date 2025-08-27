@@ -26,7 +26,7 @@ public class CustomMediaRecorder {
     private void generateMediaRecorder() throws IOException {
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         String audioEncoder = options.getAudioEncoder();
         if (audioEncoder != null) {
             switch (audioEncoder) {
