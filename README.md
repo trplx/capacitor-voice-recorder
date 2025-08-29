@@ -4,7 +4,7 @@
 <h3 align="center">Capacitor Voice Recorder</h3>
 <p align="center"><strong><code>@trplx/capacitor-voice-recorder</code></strong></p>
 <p align="center">Capacitor plugin for simple voice recording. </p>
-<p align="center">This is fork of <a href="https://github.com/tchvu3/capacitor-voice-recorder">tchvu3/capacitor-voice-recorder</a> plugin.</p>
+<p align="center">This is fork of <a href="https://github.com/tchvu3/capacitor-voice-recorder">tchvu3/capacitor-voice-recorder</a> plugin. Added the possibility to choose audio encoder (codec), and also a file extension while saving audio in file system (using directory and subDirectory options) </p>
  
 
 
