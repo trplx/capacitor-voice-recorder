@@ -177,7 +177,7 @@ public class VoiceRecorder extends Plugin {
     }
 
     @PluginMethod
-    public void getCurrentStatus(PluginCall call) {
+    public void getCurrentRecordingStatus(PluginCall call) {
         if (mediaRecorder == null) {
             call.resolve(ResponseGenerator.recordingStatusResponse(CurrentRecordingStatus.NONE));
         } else {
