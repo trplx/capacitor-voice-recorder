@@ -35,7 +35,7 @@ public class ResponseGenerator {
 
     public static JSObject permissionStatusResponse(PermissionState status) {
         JSObject statusResponse = new JSObject();
-        statusResponse.put(STATUS_RESPONSE_KEY, status);
+        statusResponse.put(STATUS_RESPONSE_KEY, status.toString().toUpperCase());
 
         return statusResponse;
     }
