@@ -14,31 +14,34 @@ public class VoiceRecorder: CAPPlugin {
     @objc func requestAudioRecordingPermission(_ call: CAPPluginCall) {
         AVAudioSession.sharedInstance().requestRecordPermission { granted in
             if granted {
-                call.resolve(ResponseGenerator.successResponse())
+                call.resolve(ResponseGenerator.permissionStatusResponse('GRANTED'))
             } else {
-                call.resolve(ResponseGenerator.failResponse())
+                call.resolve(ResponseGenerator.permissionStatusResponse('DENIED'))
             }
         }
     }
 
-    @objc func hasAudioRecordingPermission(_ call: CAPPluginCall) {
+    @objc func getAudioRecordingPermissionStatus(_ call: CAPPluginCall) {
         call.resolve(ResponseGenerator.fromBoolean(doesUserGaveAudioRecordingPermission()))
     }
 
     @objc func startRecording(_ call: CAPPluginCall) {
         if !doesUserGaveAudioRecordingPermission() {
             call.reject(Messages.MISSING_PERMISSION)
+
             return
         }
 
         if customMediaRecorder != nil {
             call.reject(Messages.ALREADY_RECORDING)
+
             return
         }
 
         customMediaRecorder = CustomMediaRecorder()
         if customMediaRecorder == nil {
             call.reject(Messages.CANNOT_RECORD_ON_THIS_PHONE)
+
             return
         }
 
@@ -105,7 +108,7 @@ public class VoiceRecorder: CAPPlugin {
         }
     }
 
-    @objc func getCurrentStatus(_ call: CAPPluginCall) {
+    @objc func getCurrentRecordingStatus(_ call: CAPPluginCall) {
         if customMediaRecorder == nil {
             call.resolve(ResponseGenerator.statusResponse(CurrentRecordingStatus.NONE))
         } else {

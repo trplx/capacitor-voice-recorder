@@ -47,7 +47,7 @@ Add the following permission to your `AndroidManifest.xml`:
 
 * [`canDeviceVoiceRecord()`](#canDeviceVoiceRecord)
 * [`requestAudioRecordingPermission()`](#requestAudioRecordingPermission)
-* [`hasAudioRecordingPermission()`](#hasAudioRecordingPermission)
+* [`getAudioRecordingPermissionStatus()`](#getAudioRecordingPermissionStatus)
 * [`startRecording(...)`](#startRecording)
 * [`stopRecording()`](#stopRecording)
 * [`pauseRecording()`](#pauseRecording)
@@ -221,7 +221,8 @@ Retrieves the current status of the recorder.
 |-----------------|----------------------------------------------------------------------|---------------------------------------------|
 | `directory`     | `[Directory](https://capacitorjs.com/docs/apis/filesystem#directory)`| Specifies a Capacitor Filesystem Directory  |
 | `subDirectory`  | `string`                                                             | Specifies a custom sub-directory (optional) |
-| `audioEncoder`  |  `AAC` \| `AAC_ELD` \| `OPUS`                                        | Specifies an audio encoder                  |
+| `audioEncoder`  |  `AAC` \| `AAC_ELD` \| `OPUS`                                        | AAC or AAC_ELD or OPUS an audio encoder     |
+| `outputFormat`  |  `MPEG_4` \| `AAC_ADTS`                                              | MPEG4 or AAC ADTS media file format         |
 | `extension`     | `.aac` \| `.mp4` \| `.m4a`                                           | Audio file extension                        |
 
 

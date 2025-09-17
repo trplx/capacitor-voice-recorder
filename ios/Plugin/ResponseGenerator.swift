@@ -21,8 +21,12 @@ struct ResponseGenerator {
         return [VALUE_RESPONSE_KEY: data]
     }
 
-    static func statusResponse(_ data: CurrentRecordingStatus) -> [String: String] {
+    static func recordingStatusResponse(_ data: CurrentRecordingStatus) -> [String: String] {
         return [STATUS_RESPONSE_KEY: data.rawValue]
+    }
+
+    static func permissionStatusResponse(_ status: String) -> [String: String] {
+        return [STATUS_RESPONSE_KEY: status]
     }
 
 }
