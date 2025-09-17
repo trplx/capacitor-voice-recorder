@@ -221,8 +221,8 @@ Retrieves the current status of the recorder.
 |-----------------|----------------------------------------------------------------------|---------------------------------------------|
 | `directory`     | `[Directory](https://capacitorjs.com/docs/apis/filesystem#directory)`| Specifies a Capacitor Filesystem Directory  |
 | `subDirectory`  | `string`                                                             | Specifies a custom sub-directory (optional) |
-| `audioEncoder`  | `string`                                                             |                                             |
-| `extension`     | `string`                                                             |                                             |
+| `audioEncoder`  |  `AAC` \| `AAC_ELD` \| `OPUS`                                        | Specifies an audio encoder                  |
+| `extension`     | `.aac` \| `.mp4` \| `.m4a`                                           | Audio file extension                        |
 
 
 #### RecordingData
@@ -263,7 +263,7 @@ Retrieves the current status of the recorder.
 The plugin will return the recording in one of several possible formats.
 The format is dependent on the os/web browser that the user uses (by default
 on android and ios the mime type will be `audio/aac`, while on chrome and firefox it
-will be `audio/webm;codecs=opus` and on safari it will be `audio/mp4`). But you can specify `encoder` and `extoption` options within `VoiceRecorder.startRecording(...)` method.
+will be `audio/webm;codecs=opus` and on safari it will be `audio/mp4`). But you can specify `encoder` and `extension` options within `VoiceRecorder.startRecording(...)` method.
 
 The plugin should still work on other browsers,
 as there is a list of mime types that the plugin checks against the user's browser.
