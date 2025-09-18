@@ -91,9 +91,10 @@ public class VoiceRecorder extends Plugin {
             String directory = call.getString("directory");
             String subDirectory = call.getString("subDirectory");
             String audioEncoder = call.getString("audioEncoder");
+            String outputFormat = call.getString("outputFormat");
             String extension = call.getString("extension");
 
-            RecordOptions options = new RecordOptions(directory, subDirectory, audioEncoder, extension);
+            RecordOptions options = new RecordOptions(directory, subDirectory, audioEncoder, outputFormat, extension);
             mediaRecorder = new CustomMediaRecorder(getContext(), options);
             mediaRecorder.startRecording();
             call.resolve();

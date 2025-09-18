@@ -5,12 +5,14 @@ public class RecordOptions {
     private String directory;
     private String subDirectory;
     private String audioEncoder;
+    private String outputFormat;
     private String extension;
 
-    public RecordOptions(String directory, String subDirectory, String audioEncoder, String extension) {
+    public RecordOptions(String directory, String subDirectory, String audioEncoder, String outputFormat, String extension) {
         this.directory = directory;
         this.subDirectory = subDirectory;
         this.audioEncoder = audioEncoder;
+        this.outputFormat = outputFormat;
         this.extension = extension;
     }
 
@@ -24,6 +26,10 @@ public class RecordOptions {
 
     public String getAudioEncoder() {
         return audioEncoder;
+    }
+
+    public String outputFormat() {
+        return outputFormat;
     }
 
     public String getExtension() {

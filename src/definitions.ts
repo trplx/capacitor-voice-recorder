@@ -13,7 +13,7 @@ export interface RecordingOptions {
     directory?: Directory;
     subDirectory?: string;
     audioEncoder?: 'AAC' | 'AAC_ELD'| 'OPUS';
-    // outputFormat?: 'AAC_ADTS' | 'MPEG_4'; 
+    outputFormat?: 'AAC_ADTS' | 'MPEG_4';
     extension?: '.aac' | '.mp4' | '.m4a';
 };
 
