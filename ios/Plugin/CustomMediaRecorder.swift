@@ -46,7 +46,11 @@ class CustomMediaRecorder {
             originalRecordingSessionCategory = recordingSession.category
             try recordingSession.setCategory(AVAudioSession.Category.playAndRecord)
             try recordingSession.setActive(true)
-            audioFilePath = getDirectoryToSaveAudioFile().appendingPathComponent("recording-\(Int(Date().timeIntervalSince1970 * 1000)).aac")
+            if (options.fileExtension != nil) {
+                audioFilePath = getDirectoryToSaveAudioFile().appendingPathComponent("recording-\(Int(Date().timeIntervalSince1970 * 1000))\(options.fileExtension ?? ".mp4")")
+            } else {
+                audioFilePath = getDirectoryToSaveAudioFile().appendingPathComponent("recording-\(Int(Date().timeIntervalSince1970 * 1000)).mp4")
+            }
             audioRecorder = try AVAudioRecorder(url: audioFilePath, settings: settings)
             audioRecorder.record()
             status = CurrentRecordingStatus.RECORDING

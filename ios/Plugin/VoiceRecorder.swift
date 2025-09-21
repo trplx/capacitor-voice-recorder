@@ -14,15 +14,19 @@ public class VoiceRecorder: CAPPlugin {
     @objc func requestAudioRecordingPermission(_ call: CAPPluginCall) {
         AVAudioSession.sharedInstance().requestRecordPermission { granted in
             if granted {
-                call.resolve(ResponseGenerator.permissionStatusResponse('GRANTED'))
+                call.resolve(ResponseGenerator.permissionStatusResponse(AVAudioSession.RecordPermission.granted))
             } else {
-                call.resolve(ResponseGenerator.permissionStatusResponse('DENIED'))
+                call.resolve(ResponseGenerator.permissionStatusResponse(AVAudioSession.RecordPermission.denied))
             }
         }
     }
 
     @objc func getAudioRecordingPermissionStatus(_ call: CAPPluginCall) {
-        call.resolve(ResponseGenerator.fromBoolean(doesUserGaveAudioRecordingPermission()))
+        if (doesUserGaveAudioRecordingPermission()) {
+            call.resolve(ResponseGenerator.permissionStatusResponse(AVAudioSession.RecordPermission.granted))
+        } else {
+            call.resolve(ResponseGenerator.permissionStatusResponse(AVAudioSession.RecordPermission.denied))
+        }
     }
 
     @objc func startRecording(_ call: CAPPluginCall) {
@@ -47,13 +51,16 @@ public class VoiceRecorder: CAPPlugin {
 
         let directory: String? = call.getString("directory")
         let subDirectory: String? = call.getString("subDirectory")
-        let recordOptions = RecordOptions(directory: directory, subDirectory: subDirectory)
+        let audioEncoder: String? = call.getString("audioEncoder")
+        let outputFormat: String? = call.getString("outputFormat")
+        let fileExtension: String? = call.getString("extension")
+        let recordOptions = RecordOptions(directory: directory, subDirectory: subDirectory, audioEncoder: audioEncoder, outputFormat: outputFormat, fileExtension: fileExtension)
         let successfullyStartedRecording = customMediaRecorder!.startRecording(recordOptions: recordOptions)
         if successfullyStartedRecording == false {
             customMediaRecorder = nil
             call.reject(Messages.CANNOT_RECORD_ON_THIS_PHONE)
         } else {
-            call.resolve(ResponseGenerator.successResponse())
+            call.resolve()
         }
     }
 
@@ -69,6 +76,7 @@ public class VoiceRecorder: CAPPlugin {
         if audioFileUrl == nil {
             customMediaRecorder = nil
             call.reject(Messages.FAILED_TO_FETCH_RECORDING)
+            
             return
         }
 
@@ -80,7 +88,7 @@ public class VoiceRecorder: CAPPlugin {
         let sendDataAsBase64 = customMediaRecorder?.options?.directory == nil
         let recordData = RecordData(
             recordDataBase64: sendDataAsBase64 ? readFileAsBase64(audioFileUrl) : nil,
-            mimeType: "audio/aac",
+            mimeType: "audio/mp4",
             msDuration: getMsDurationOfAudioFile(audioFileUrl),
             path: sendDataAsBase64 ? nil : path
         )
@@ -110,9 +118,9 @@ public class VoiceRecorder: CAPPlugin {
 
     @objc func getCurrentRecordingStatus(_ call: CAPPluginCall) {
         if customMediaRecorder == nil {
-            call.resolve(ResponseGenerator.statusResponse(CurrentRecordingStatus.NONE))
+            call.resolve(ResponseGenerator.recordingStatusResponse(CurrentRecordingStatus.NONE))
         } else {
-            call.resolve(ResponseGenerator.statusResponse(customMediaRecorder?.getCurrentStatus() ?? CurrentRecordingStatus.NONE))
+            call.resolve(ResponseGenerator.recordingStatusResponse(customMediaRecorder?.getCurrentStatus() ?? CurrentRecordingStatus.NONE))
         }
     }
 
@@ -128,6 +136,7 @@ public class VoiceRecorder: CAPPlugin {
         do {
             let fileData = try Data.init(contentsOf: filePath!)
             let fileStream = fileData.base64EncodedString(options: NSData.Base64EncodingOptions.init(rawValue: 0))
+            
             return fileStream
         } catch {}
 

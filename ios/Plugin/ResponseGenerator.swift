@@ -1,4 +1,5 @@
 import Foundation
+import AVFoundation
 
 struct ResponseGenerator {
 
@@ -25,8 +26,12 @@ struct ResponseGenerator {
         return [STATUS_RESPONSE_KEY: data.rawValue]
     }
 
-    static func permissionStatusResponse(_ status: String) -> [String: String] {
-        return [STATUS_RESPONSE_KEY: status]
+    static func permissionStatusResponse(_ status: AVAudioSession.RecordPermission) -> [String: String] {
+        if (status == AVAudioSession.RecordPermission.granted) {
+            return [STATUS_RESPONSE_KEY: "GRANTED"]
+        } else {
+            return [STATUS_RESPONSE_KEY: "DENIED"]
+        }
     }
 
 }
